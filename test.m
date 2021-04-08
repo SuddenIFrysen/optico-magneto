@@ -1,0 +1,1 @@
+disp('Nu ska jag visa er att även en dalmas kan resa i Hyperspace.')
