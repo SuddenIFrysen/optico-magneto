@@ -1,14 +1,15 @@
 % DEFINE FUNCTIONS AND PARAMETERS
 model = createpde();
-%importGeometry(model,'100mmcube-ringmagnet.stl');
-model.Geometry = gm
-
-pdegplot(model,'CellLabels','on','FaceAlpha',0.5)
 
 Ru = 40;
 Ri = 25;
-L = 5;
+H = 5;
 h = 1;
+L = 100;
+model.Geometry = generate_slices(Ri,Ru,h,H,L);
+
+pdegplot(model,'CellLabels','on','FaceAlpha',0.5)
+
 
 specifyCoefficients(model,'m',0,'d',0,'c',1,'a',0,'f',0,'cell',1);
 specifyCoefficients(model,'m',0,'d',0,'c',1,'a',0,'f',1,'cell',2);
@@ -63,8 +64,8 @@ ylabel('z')
 slice = floor(mesh_size/2)+1;
 
 hold on
-rectangle('Position', [Ri, -L/2-h, (Ru-Ri), L+2*h]);
-rectangle('Position', [-Ru, -L/2-h, (Ru-Ri), L+2*h]);
+rectangle('Position', [Ri, -H/2-h, (Ru-Ri), H+2*h]);
+rectangle('Position', [-Ru, -H/2-h, (Ru-Ri), H+2*h]);
 quiver(X(slice,:,:),Z(slice,:,:),gradx(slice,:,:),gradz(slice,:,:))
 
 
