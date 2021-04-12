@@ -1,18 +1,18 @@
 % DEFINE FUNCTIONS AND PARAMETERS
 model = createpde();
-importGeometry(model,'100mmcube-ringmagnet.stl');
+%importGeometry(model,'100mmcube-ringmagnet.stl');
+model.Geometry = gm
 
-pdegplot(model,'FaceLabels','on','FaceAlpha',0.5)
+pdegplot(model,'CellLabels','on','FaceAlpha',0.5)
 
 Ru = 40;
 Ri = 25;
 L = 5;
 h = 1;
 
-f_cyl = @(r, z) (abs(z)<(L/2+h)).*(abs(z)>(L/2)).*(r<Ru).*(r>Ri).*sign(z);
-f_kart = @(location, state) f_cyl((location.x.^2+location.y.^2).^(1/2),location.z);
-
-CA = specifyCoefficients(model,'m',0,'d',0,'c',1,'a',0,'f',f_kart);
+specifyCoefficients(model,'m',0,'d',0,'c',1,'a',0,'f',0,'cell',1);
+specifyCoefficients(model,'m',0,'d',0,'c',1,'a',0,'f',1,'cell',2);
+specifyCoefficients(model,'m',0,'d',0,'c',1,'a',0,'f',-1,'cell',3);
 
 %Face 2 är botten och Face 3 är toppen
 
@@ -20,14 +20,14 @@ CA = specifyCoefficients(model,'m',0,'d',0,'c',1,'a',0,'f',f_kart);
 %applyBoundaryCondition(model,'dirichlet','Face',3,'u',1);
 %applyBoundaryCondition(model,'dirichlet','Face',1,'u',0);
 %applyBoundaryCondition(model,'dirichlet','Face',4,'u',0);
-for i = 5:10
+for i = 1:6
     applyBoundaryCondition(model,'dirichlet','Face',i,'u',0);
 end
 %% GENERATE MESH
 
-generateMesh(model,'Hmax',4);
+generateMesh(model);%,'Hmax',4);
 
-pdeplot3D(model);
+pdeplot3D(model, 'FaceAlpha', 0.5);
 
 %% SOLVE PDE AND GRADIENT
 results = solvepde(model);
@@ -62,6 +62,9 @@ xlabel('x')
 ylabel('z')
 slice = floor(mesh_size/2)+1;
 
+hold on
+rectangle('Position', [Ri, -L/2-h, (Ru-Ri), L+2*h]);
+rectangle('Position', [-Ru, -L/2-h, (Ru-Ri), L+2*h]);
 quiver(X(slice,:,:),Z(slice,:,:),gradx(slice,:,:),gradz(slice,:,:))
 
 
