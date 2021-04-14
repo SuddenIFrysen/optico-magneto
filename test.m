@@ -1,1 +1,5 @@
-disp('Nu ska jag visa er att även en dalmas kan resa i Hyperspace.')
+model = createpde;
+model.Geometry = gm;
+mesh = generateMesh(model);
+Ef2 = findElements(mesh,'region','Cell',2);
+pdemesh(mesh.Nodes,mesh.Elements(:,Ef2))

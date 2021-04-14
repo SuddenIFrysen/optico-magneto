@@ -7,7 +7,7 @@ H = 5;      %HEIGHT OF THE RING
 h = 0.2;    %HEIGHT OF THE MAGNETIC CHARGE
 L = 500;    %SIDE LENGTH OF CUBE
 M = 1;      %THE MAGNETIZATION STRENGHT OF THE SOURCES
-model.Geometry = generate_slices(Ri,Ru,h,H,L);
+generate_slices(Ri,Ru,h,H,L, M, model);
 
 f_cyl = @(r,z) (r<Ru).*(r>Ri).*(abs(z)>(H/2-h)).*(abs(z)<(H/2)).*sign(z).*M;
 f_kart = @(location, state) f_cyl((location.x.^2+location.y.^2).^(1/2),location.z);
@@ -17,9 +17,7 @@ pdegplot(model,'FaceLabels','on','FaceAlpha',0.5)
 %Sets the differential equation to be laplace in the whole volume, except
 %in the charged areas of the ring.
 %specifyCoefficients(model,'m',0,'d',0,'c',1,'a',0,'f',f_kart);
-specifyCoefficients(model,'m',0,'d',0,'c',1,'a',0,'f',0,'cell',1);
-specifyCoefficients(model,'m',0,'d',0,'c',1,'a',0,'f',M,'cell',2);
-specifyCoefficients(model,'m',0,'d',0,'c',1,'a',0,'f',-M,'cell',3);
+
 
 %Applies dirichlet conditions on all the cubes faces
 for i = 1:6
@@ -38,7 +36,7 @@ results = solvepde(model);
 %Specifies the point where the gradients are evaluated. 
 eval_mesh_size = 99;
 [X,Y,Z] = meshgrid(linspace(-50,50,eval_mesh_size),linspace(-50,50,eval_mesh_size),linspace(-50,50,eval_mesh_size));
-[gradx,grady,gradz] = evaluateGradient(results,X,Y,Z);
+[gradx,grady,gradz] = evaluateGradient(results,-X,-Y,-Z);
 
 gradx = reshape(gradx,size(X));
 grady = reshape(grady,size(Y));
