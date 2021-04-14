@@ -29,6 +29,32 @@ end
 %max lenght of mesh
 generateMesh(model, 'Hmax', 15);
 % pdeplot3D(model, 'FaceAlpha', 0.5);
+disp('Mesh generated')
+
+%% Evan
+figure()
+ax = gca;
+ax.NextPlot = 'replaceChildren';
+startEls = [findElements(model.Mesh, 'region', 'cell', 2), findElements(model.Mesh, 'region', 'cell', 3)];
+pdemesh(model.Mesh.Nodes, model.Mesh.Elements(:, startEls), 'FaceAlpha', 0.5)
+axis manual
+drawnow
+meshIDs = {startEls};
+allEls = startEls;
+while true
+    newEls = findElements(model.Mesh, 'attached', reshape(model.Mesh.Elements(:,meshIDs{end}), 1, []));
+    newEls = newEls(~ismember(newEls,allEls));
+    allEls = [allEls newEls];
+    meshIDs{end+1} = newEls;
+    pdemesh(model.Mesh.Nodes, model.Mesh.Elements(:, meshIDs{end}), 'FaceAlpha', 0.5)
+    drawnow
+    pause(0.5)
+    if numel(newEls) == 0
+        break
+    end
+end
+
+
 
 %% SOLVE PDE AND GRADIENT
 results = solvepde(model);
