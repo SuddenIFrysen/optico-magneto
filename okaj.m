@@ -5,7 +5,7 @@ Ru = 20;    %OUTER RING DIAMETER
 Ri = 12.5;    %INNER RING DIAMETER
 H = 5;      %HEIGHT OF THE RING
 h = 0.2;    %HEIGHT OF THE MAGNETIC CHARGE
-L = 500;    %SIDE LENGTH OF CUBE
+L = 100;    %SIDE LENGTH OF CUBE
 M = 1;      %THE MAGNETIZATION STRENGHT OF THE SOURCES
 generate_slices(Ri,Ru,h,H,L, M, model);
 
@@ -28,38 +28,47 @@ end
 %Generates the mesh. For finer mesh add both 'Hmax',l as parameters where l is
 %max lenght of mesh
 generateMesh(model);
-pdeplot3D(model, 'FaceAlpha', 0.5);
+% pdeplot3D(model, 'FaceAlpha', 0.5);
 
 %% SOLVE PDE AND GRADIENT
 results = solvepde(model);
+disp('PDE solved!')
 
 %Specifies the point where the gradients are evaluated. 
-eval_mesh_size = 99;
-[X,Y,Z] = meshgrid(linspace(-50,50,eval_mesh_size),linspace(-50,50,eval_mesh_size),linspace(-50,50,eval_mesh_size));
-[gradx,grady,gradz] = evaluateGradient(results,-X,-Y,-Z);
+eval_mesh_size = 51;
+viewbox_side = ceil(2*Ru/10)*10;
+viewbox_height = ceil(2*H/10)*10;
+[X,Y,Z] = meshgrid(linspace(-viewbox_side,viewbox_side,eval_mesh_size), ...
+                   0, linspace(-viewbox_height,viewbox_height,eval_mesh_size));
+[gradx,grady,gradz] = evaluateGradient(results,X,Y,Z);
+phi = interpolateSolution(results,X,Y,Z);
 
-gradx = reshape(gradx,size(X));
-grady = reshape(grady,size(Y));
-gradz = reshape(gradz,size(Z));
+disp('Gradient computed')
+
+gradx = squeeze(reshape(gradx,size(X)));
+grady = squeeze(reshape(grady,size(Y)));
+gradz = squeeze(reshape(gradz,size(Z)));
+phi = squeeze(reshape(phi, size(X)));
+X = squeeze(X);
+Y = squeeze(Y);
+Z = squeeze(Z);
 
 %% PLOT 3D SOLUTION
 
-quiver3(X,Y,Z,gradx,grady,gradz)
+%quiver3(X,Y,Z,gradx,grady,gradz)
 
 %Sjukt cursed plot, plotta ej denna!
 %pdeplot3D(model,'ColorMapData',results.NodalSolution)
 
-axis equal
-xlabel('x')
-ylabel('y')
-zlabel('z')
+%axis equal
+%xlabel('x')
+%ylabel('y')
+%zlabel('z')
 
 %% PLOT 2D SOLUTION
-
+close all
 xlabel('x')
 ylabel('z')
-slice = floor(eval_mesh_size/2)+1;
-
 hold on
 rectangle('Position', [Ri, -H/2, (Ru-Ri), H]);
 rectangle('Position', [Ri, -H/2, (Ru-Ri), h], 'EdgeColor','b');
@@ -67,20 +76,24 @@ rectangle('Position', [Ri, H/2-h, (Ru-Ri), h], 'EdgeColor','r');
 rectangle('Position', [-Ru, -H/2, (Ru-Ri), H]);
 rectangle('Position', [-Ru, -H/2, (Ru-Ri), h], 'EdgeColor','b');
 rectangle('Position', [-Ru, H/2-h, (Ru-Ri), h], 'EdgeColor','r');
-quiver(X(slice,:,:),Z(slice,:,:),gradx(slice,:,:),gradz(slice,:,:))
+quiver(X,Z,gradx,gradz)
 hold off
 
+figure()
+xlabel('x')
+ylabel('z')
+contourf(X, Z, phi)
 %% PLOTTING AGAINST VITALIY
 
-zis = slice:(slice+7);
+mid = round((eval_mesh_size+1)/2);
+zis = mid:5:(mid+25);
 colors = ["green", "red", "cyan", "magenta", "yellow", "black", "none", "none", "none"];
-
+figure()
 hold on
-for i = zis
-    xs = X(slice,slice:eval_mesh_size,i);
-    zs = gradz(slice,slice:eval_mesh_size,i);
-    plot(xs,zs, 'Color', colors(1+i-slice), 'DisplayName', 'z='+ string(Z(15,15,i)));
-    display(colors(1+i-slice))
+for i = 1:numel(zis)
+    xs = X(mid:eval_mesh_size,zis(i));
+    zs = gradz(mid:eval_mesh_size,zis(i));
+    plot(xs,zs, 'Color', colors(i), 'DisplayName', 'z='+ string(Z(1,zis(i))));
 end
 
 grid on
