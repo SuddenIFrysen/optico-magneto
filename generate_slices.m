@@ -1,7 +1,7 @@
 function generate_slices(r1, r2, h, H, L, M, model)
     % GENERATE_SLICES
-    % Create and return DiscreteGeometry object with two thin hollow cylinders
-    % within a box. Parameters:
+    % Modify a model object by setting the geometry to two "magnetically 
+    % charged" slices. Parameters:
     %   r1 - cylinder inner radius
     %   r2    - cylinder outer radius
     %   h     - cylinder height (ideally very small)

@@ -5,7 +5,7 @@ Ru = 20;    %OUTER RING DIAMETER
 Ri = 12.5;    %INNER RING DIAMETER
 H = 5;      %HEIGHT OF THE RING
 h = 0.51;    %HEIGHT OF THE MAGNETIC CHARGE
-L = 500;    %SIDE LENGTH OF CUBE
+L = 100;    %SIDE LENGTH OF CUBE
 M = 1;      %THE MAGNETIZATION STRENGHT OF THE SOURCES
 generate_slices(Ri,Ru,h,H,L, M, model);
 
@@ -67,8 +67,7 @@ while true
     while (waitforbuttonpress == 0)
     end
 end
-
-
+clear X Y Z ax cell meshIDs newEls startEls
 %% SOLVE PDE AND GRADIENT
 results = solvepde(model);
 disp('PDE solved!')
