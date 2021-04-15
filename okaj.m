@@ -27,7 +27,11 @@ end
 
 %Generates the mesh. For finer mesh add both 'Hmax',l as parameters where l is
 %max lenght of mesh
-generateMesh(model, 'Hmin', 0.1, 'Hmax', 15, 'Hgrad', 1.01);
+%   Det här är BRA ( ͡° ͜ʖ ͡°): 
+%   generateMesh(model, 'Hmin', 0.1, 'Hmax', 50, 'Hgrad', 1.02);
+%   Åtminstone för L = 500, H = 5, h = 0.51
+%   Men gör som du vill, jag är bara en kommentar, inte din morsa
+generateMesh(model, 'Hmin', 0.1, 'Hmax', 50, 'Hgrad', 1.02);
 % pdeplot3D(model, 'FaceAlpha', 0.5);
 disp('Mesh generated')
 
