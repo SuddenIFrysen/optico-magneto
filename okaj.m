@@ -27,7 +27,7 @@ end
 
 %Generates the mesh. For finer mesh add both 'Hmax',l as parameters where l is
 %max lenght of mesh
-generateMesh(model, 'Hmax', 15);
+generateMesh(model, 'Hmin', 0.1, 'Hmax', 15, 'Hgrad', 1.01);
 % pdeplot3D(model, 'FaceAlpha', 0.5);
 disp('Mesh generated')
 
@@ -35,25 +35,34 @@ disp('Mesh generated')
 figure()
 ax = gca;
 ax.NextPlot = 'replaceChildren';
-startEls = [findElements(model.Mesh, 'region', 'cell', 2), findElements(model.Mesh, 'region', 'cell', 3)];
-pdemesh(model.Mesh.Nodes, model.Mesh.Elements(:, startEls), 'FaceAlpha', 0.5)
-axis manual
-drawnow
-meshIDs = {startEls};
-allEls = startEls;
+newEls = [findElements(model.Mesh, 'region', 'cell', 2), findElements(model.Mesh, 'region', 'cell', 3)];
+startEls = newEls;
+meshIDs = {newEls};
+allEls = newEls;
 while true
+    % Draw and set scale
+    pdemesh(model.Mesh.Nodes, model.Mesh.Elements(:, newEls), 'FaceAlpha', 0.5)
+    hold on
+    pdemesh(model.Mesh.Nodes, model.Mesh.Elements(:, startEls), 'FaceColor', 'black')
+    hold off
+    cell = num2cell(model.Mesh.Nodes(:, model.Mesh.Elements(:, meshIDs{end})), 2);
+    [X, Y, Z] = cell{:};
+    xlim([0.9*min(X) 1.1*max(X)]);
+    ylim([0.9*min(Y) 1.1*max(Y)]);
+    zlim([0.9*min(Z) 1.1*max(Z)]);
+    drawnow
     newEls = findElements(model.Mesh, 'attached', reshape(model.Mesh.Elements(:,meshIDs{end}), 1, []));
     newEls = newEls(~ismember(newEls,allEls));
+
     allEls = [allEls newEls];
     meshIDs{end+1} = newEls;
-    pdemesh(model.Mesh.Nodes, model.Mesh.Elements(:, meshIDs{end}), 'FaceAlpha', 0.5)
-    drawnow
-    pause(0.5)
     if numel(newEls) == 0
         break
     end
+    
+    while (waitforbuttonpress == 0)
+    end
 end
-
 
 
 %% SOLVE PDE AND GRADIENT
