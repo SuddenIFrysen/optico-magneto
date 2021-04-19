@@ -13,17 +13,6 @@ dipoles_amount = size(r_dipoles,1);
 position_amount = size(r_eval,1);
 
 B = zeros(position_amount,3);
-les_amount
-        r = r_eval(i,:)-r_dipoles(j,:);
-        if norm(r) < r_thresh
-            B(i,:) = [0,0,0];
-            break
-        end
-        B(i,:) = B(i,:) + (mu_0/(4*pi))*((3*r* ...
-            (m_matrix(j,:)*r'))/(norm(r))^5 - ...
-             m_matrix(j,:)/(norm(r))^3);
-    end
-end
 for i = 1:position_amount
     for j = 1:dipoles_amount
         r = r_eval(i,:)-r_dipoles(j,:);
