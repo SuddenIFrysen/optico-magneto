@@ -1,4 +1,4 @@
-function B = okuja_backup(X,Y,Z,r_dipoles, m_matrix, r_thresh)
+function B = okuja(X,Y,Z,r_dipoles, m_matrix, r_thresh)
 % Lös alla dipolers B-fältsbidrag i den givna
 % För att få ut B-fält, summera allas bidrag
 
