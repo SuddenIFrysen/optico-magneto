@@ -1,4 +1,4 @@
-function B = okuja(r_dipoles, m_matrix, r_eval,r_thresh)
+function B = okuja(X,Y,Z,r_dipoles, m_matrix, r_thresh)
 % Lös alla dipolers B-fältsbidrag i den givna
 % För att få ut B-fält, summera allas bidrag
 
@@ -10,12 +10,15 @@ function B = okuja(r_dipoles, m_matrix, r_eval,r_thresh)
 
 mu_0 = 1.25663706212e-6;
 dipoles_amount = size(r_dipoles,1);
-position_amount = size(r_eval,1);
+position_amount = numel(X);
 
 B = zeros(position_amount,3);
+Bx = zeros(size(X));
+By = zeros(size(X));
+Bz = zeros(size(X));
 for i = 1:position_amount
     for j = 1:dipoles_amount
-        r = r_eval(i,:)-r_dipoles(j,:);
+        r = [X(i),Y(i),Z(i)]-r_dipoles(j,:);
         if norm(r) < r_thresh
             B(i,:) = [0,0,0];
             break
@@ -23,5 +26,15 @@ for i = 1:position_amount
         B(i,:) = B(i,:) + (mu_0/(4*pi))*((3*r* ...
             (m_matrix(j,:)*r'))/(norm(r))^5 - ...
              m_matrix(j,:)/(norm(r))^3);
+        Bx(i) = B(i,1);
+        By(i) = B(i,2);
+        Bz(i) = B(i,3);
+
     end
+end
+
+B = zeros(size(Bx,1),size(Bx,2),3);
+B(:,:,1) = Bx;
+B(:,:,2) = By;
+B(:,:,3) = Bz;
 end
