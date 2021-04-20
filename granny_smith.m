@@ -48,8 +48,5 @@ function [x, B_best] = granny_smith(B, B_0, inprod, n)
         x(i) = inprod(B_0, E{i});
     end
     x = (M\(x'))';
-    B_best = x(1)*V{1};
-    for i = 2:n
-        B_best = B_best + V{i}*x(i);
-    end
+    B_best = B(x);
 end
