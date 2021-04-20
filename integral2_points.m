@@ -5,6 +5,6 @@ function I = integral2_points(val_in_points, dx, dy)
 if dy == 0
     dy = 2*pi/height(val_in_points);
 end
-I = dx*dy*all(val_in_points);
+I = dx*dy*sum(val_in_points,'all');
 end
 
