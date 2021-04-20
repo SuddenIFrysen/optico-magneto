@@ -15,13 +15,26 @@ if class(B1) == 'function_handle' && class(B2) == 'function_handle'
     integrand_in_points = zeros(100,100);
     for i = 1:length(integrand_in_points)
         for j = 1:height(integrand_in_points)
-            integrand_in_points(i,j) = integrand((i-0.5)/100);
+            integrand_in_points(i,j) = integrand((i-0.5)/100, j/100*2*pi);
         end
     end
     i = integral2_points(integrand_in_points, 1/100, 2*pi/100);
 end
 
+if class(B1) == 'double' && class(B2) == 'function_handle'
+    temp = B1;
+    B1 = B2;
+    B2 = temp;
+end
+
+if class(B1) == 'function_handle' && class(B2) == 'double'
+    
+end
+
+if class(B1) == 'double' && class(B2) ==  'double'
+    integrand_in_points = B1(:,:,1).*B2(:,:,1) + B1(:,:,2).*B2(:,:,2) + B1(:,:,3).*B2(:,:,3);
+    i = integral2_points(integrand_in_points, R/height(integrand_in_points), 2*pi/width(integrand_in_points));
+end
 
 
 end
-
