@@ -7,4 +7,3 @@ if dy == 0
 end
 I = dx*dy*sum(val_in_points,'all');
 end
-
