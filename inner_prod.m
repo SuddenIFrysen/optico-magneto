@@ -8,12 +8,19 @@ function i = inner_prod(B1, B2)
     %       )or evaluted in points as (n x 2) matrix with r pos in first 
     %       column and theta in secound column.
     
-    R = 1;
+R = 1;
     
 if class(B1) == 'function_handle' && class(B2) == 'function_handle'
-    f = @(r, t) r*dot(B1(r, t), B2(r,t));
-    i = integral2(f, 0, R, 0, 2*pi);
+    integrand = @(r, t) r*dot(B1(r,t), B2(r,t));
+    integrand_in_points = zeros(100,100);
+    for i = 1:length(integrand_in_points)
+        for j = 1:height(integrand_in_points)
+            integrand_in_points(i,j) = integrand((i-0.5)/100);
+        end
+    end
+    i = integral2_points(integrand_in_points, 1/100, 2*pi/100);
 end
+
 
 
 end
