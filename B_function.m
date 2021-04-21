@@ -35,6 +35,13 @@ classdef B_function
             res = B_function(@(varargin) obj1.eval(varargin{:})*num);
         end
         
+        function res = mrdivide(obj1, num)
+            if (class(num) ~= "double") || (class(obj1) ~= "B_function")
+                error('Only scalar division is defined!')
+            end
+            res = B_function(@(varargin) obj1.eval(varargin{:}) ./ num);
+        end
+        
         function res = subsref(obj, varargin)
             res = obj.eval(varargin{1}.subs{:});
         end
