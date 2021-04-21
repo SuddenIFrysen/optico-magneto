@@ -7,7 +7,7 @@ function i = inner_prod(B1, B2)
     %       )or evaluted in points as (n x n x 1)
 
 R = 1;
-    
+
 if class(B1) == "function_handle" && class(B2) == "function_handle"
     integrand = @(r, t) r*dot(B1(r,t), B2(r,t));
     integrand_in_points = zeros(100,100);
