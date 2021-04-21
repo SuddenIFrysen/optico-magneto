@@ -25,7 +25,7 @@ pos_dipole = [0,0,1;0,0,-1];
 %m_dipole = repmat([0,0,1],amount_dipoles,1);
 m_dipole = [A(1:3);A(4:6)];
 
-B = okuja(X,Y,Z,pos_dipole,m_dipole,0.011);
+B = get_field(X,Y,Z,pos_dipole,m_dipole,0.011);
 
 B_normalized = zeros(size(B));
 %Normaliserar B
