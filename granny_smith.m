@@ -1,4 +1,4 @@
-function [x, B_best] = granny_smith(B, B_0, inprod, n)
+function [x, B_best] = granny_smith(B, B_0, inprod, n, verbose)
 %GRANNY_SMITH Find best coefficients for a projection problem
 %   
 % Given a function handle to compute a property B from a coefficient
@@ -22,7 +22,10 @@ function [x, B_best] = granny_smith(B, B_0, inprod, n)
 %          accordingly.
 % n      - Number of degrees of freedom. More specifically, B must take a
 %          1x3 vector of real numbers as its only argument. 
-
+    if nargin == 4
+        verbose = false;
+    end
+    
     V = cell(1, n); % To store the basis vectors corresponding to the original basis
     M = zeros(n); % To store the change-of-basis matrix from ON-basis to original basis
     
@@ -36,10 +39,24 @@ function [x, B_best] = granny_smith(B, B_0, inprod, n)
     for i = 1:n
         E{i} = V{i};
         for j = 1:(i-1)
+            if verbose
+                disp(['Starting to compute inner product between ' num2str(i) ' and ' num2str(j)])
+                tic
+            end
             M(j,i) = inprod(E{j}, V{i});
+            if verbose
+                disp(['It took ' num2str(toc) ' s'])
+            end
             E{i} = E{i} - M(j, i)*E{j};
         end
+        if verbose
+            disp(['Starting to compute inner product between ' num2str(i) ' and ' num2str(i)])
+            tic
+        end
         M(i, i) = sqrt(inprod(E{i}, E{i}));
+        if verbose
+            disp(['It took ' num2str(toc) ' s'])
+        end
         E{i} = E{i} / M(i, i);
     end
     
