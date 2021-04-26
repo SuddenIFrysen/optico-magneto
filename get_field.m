@@ -29,7 +29,6 @@ for i = 1:position_amount
         Bx(i) = B(i,1);
         By(i) = B(i,2);
         Bz(i) = B(i,3);
-
     end
 end
 
