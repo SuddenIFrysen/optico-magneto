@@ -9,6 +9,6 @@ end
 
 function i = integra(B1, B2, R, origo, phi)
     integrand_kart = @(x, y, z) dot(B1(x, y, z), B2(x, y, z), 3);
-    integrand_circ = @(r, t) r.*integrand_kart(r.*cos(t)+origo(1), r.*sin(t)*cos(phi)+origo(2), r.*sin(t)*sin(phi));
+    integrand_circ = @(r, t) r.*integrand_kart(r.*cos(t)+origo(1), r.*sin(t)*cos(phi)+origo(2), r.*sin(t)*sin(phi)+origo(3));
     i = integral2(integrand_circ, 0, R, 0, 2*pi);
 end
