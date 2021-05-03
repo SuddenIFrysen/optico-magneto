@@ -41,10 +41,13 @@ classdef ring_magnet
             A = sqrt(X.^2+Y.^2+Z.^2)/obj.R;
             SinT = Z ./ (A*obj.R);
             CosT = 1 - SinT.^2;
-            Br = 3e-7*m*A.*SinT./(pi*obj.R^3*(A.^2+1).^(5/2)).*(A.*CosT.*obj.eval_F(2*A.*CosT./(A.^2+1), 1)-obj.eval_F(2*A.*CosT./(A.^2+1), 2));
-            Bz = 1e-7*m./(pi*obj.R^3*(A.^2+1).^(5/2)).*((3*A.^2.*SinT.^2-A.^2-1).*obj.eval_F(2*A.*CosT./(A.^2+1), 1)+2.*A.*CosT.*obj.eval_F(2*A.*CosT./(A.^2+1), 2));
+            Br = 3e-7*obj.M*A.*SinT./(pi*obj.R^3*(A.^2+1).^(5/2)).*(A.*CosT.*obj.eval_F(2*A.*CosT./(A.^2+1), 1)-obj.eval_F(2*A.*CosT./(A.^2+1), 2));
+            Bz = 1e-7*obj.M./(pi*obj.R^3*(A.^2+1).^(5/2)).*((3*A.^2.*SinT.^2-A.^2-1).*obj.eval_F(2*A.*CosT./(A.^2+1), 1)+2.*A.*CosT.*obj.eval_F(2*A.*CosT./(A.^2+1), 2));
+            
             Bx = X./(X.^2+Y.^2).*Br;
             By = Y./(X.^2+Y.^2).*Br;
+            Bx(isnan(Bx)) = 0;
+            By(isnan(By)) = 0;
             
             B = zeros(size(Bx,1),size(Bx,2),3);
             B(:,:,1) = Bx;
