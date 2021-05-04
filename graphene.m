@@ -5,15 +5,21 @@ classdef graphene
         Normal
         R
         Phi
+        Chem_pot
+        Fermi_vel
+        Tau
     end
     
     methods
-        function obj = graphene(origin, r, phi)
+        function obj = graphene(origin, r, phi, chem_pot, fermi_vel,tau)
             % GRAPHENE Construct an instance of this class
             obj.Origin = origin;
             obj.R = r;
             obj.Phi = phi;
             obj.Normal = [0, -sin(phi), cos(phi)];
+            obj.Chem_pot = chem_pot;
+            obj.Fermi_vel = fermi_vel;
+            obj.Tau = tau;
         end
         
         function [X, Y, Z] = Transform(obj, X_in, T_in, N_in)
@@ -34,4 +40,3 @@ classdef graphene
         end
     end
 end
-
