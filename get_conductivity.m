@@ -17,4 +17,3 @@ sigmaxy = q^2*domain.Chem_pot*omega_c/(pi*h_bar*(omega-1i/domain.Tau...
         
 sigma = [sigmaxx,sigmaxy;sigmaxy,sigmaxx];
 end
-

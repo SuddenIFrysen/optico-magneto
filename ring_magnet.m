@@ -56,4 +56,3 @@ classdef ring_magnet
         end
     end
 end
-
