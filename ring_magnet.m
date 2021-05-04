@@ -13,14 +13,14 @@ classdef ring_magnet
     end
     
     methods
-        function obj = ring_magnet(R)
+        function obj = ring_magnet(R, Normal, Origin, M, integral_eval_spacing)
             %UNTITLED5 Construct an instance of this class
             %   Detailed explanation goes here
             obj.R = R;
-            obj.Normal = [0 0 1];
-            obj.Origin = [0 0 0];
-            obj.M = 1;
-            obj.X = linspace(0, 1, 1000);
+            obj.Normal = Normal;
+            obj.Origin = Origin;
+            obj.M = M;
+            obj.X = linspace(0, 1, 1./integral_eval_spacing);
             f1 = @(x) integral(@(phi) 1./(1-x.*cos(phi)).^(5/2), 0, pi);
             f2 = @(x) integral(@(phi) cos(phi)./(1-x.*cos(phi)).^(5/2), 0, pi);
             obj.F1 = arrayfun(f1, obj.X);
@@ -40,9 +40,14 @@ classdef ring_magnet
         function B = get_field(obj, X, Y, Z)
             A = sqrt(X.^2+Y.^2+Z.^2)/obj.R;
             SinT = Z ./ (A*obj.R);
-            CosT = 1 - SinT.^2;
-            Br = 3e-7*obj.M*A.*SinT./(pi*obj.R^3*(A.^2+1).^(5/2)).*(A.*CosT.*obj.eval_F(2*A.*CosT./(A.^2+1), 1)-obj.eval_F(2*A.*CosT./(A.^2+1), 2));
-            Bz = 1e-7*obj.M./(pi*obj.R^3*(A.^2+1).^(5/2)).*((3*A.^2.*SinT.^2-A.^2-1).*obj.eval_F(2*A.*CosT./(A.^2+1), 1)+2.*A.*CosT.*obj.eval_F(2*A.*CosT./(A.^2+1), 2));
+            CosT = sqrt(1 - SinT.^2);
+            % CosT = 1 - SinT.^2;
+            
+            F_arg = 2*A.*CosT./(A.^2+1);
+            F1 = obj.eval_F(F_arg, 1);
+            F2 = obj.eval_F(F_arg, 2);
+            Br = 3e-7*obj.M*A.*SinT./(pi*obj.R^3*(A.^2+1).^(5/2)).*(A.*CosT.*F1-F2);
+            Bz = 1e-7*obj.M./(pi*obj.R^3*(A.^2+1).^(5/2)).*((3*A.^2.*SinT.^2-A.^2-1).*F1+2.*A.*CosT.*F2);
             
             Bx = X./(X.^2+Y.^2).*Br;
             By = Y./(X.^2+Y.^2).*Br;
