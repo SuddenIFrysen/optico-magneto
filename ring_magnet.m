@@ -13,13 +13,13 @@ classdef ring_magnet
     end
     
     methods
-        function obj = ring_magnet(R)
+        function obj = ring_magnet(R, M)
             %UNTITLED5 Construct an instance of this class
             %   Detailed explanation goes here
             obj.R = R;
             obj.Normal = [0 0 1];
             obj.Origin = [0 0 0];
-            obj.M = 1;
+            obj.M = M;
             obj.X = linspace(0, 1, 1000);
             f1 = @(x) integral(@(phi) 1./(1-x.*cos(phi)).^(5/2), 0, pi);
             f2 = @(x) integral(@(phi) cos(phi)./(1-x.*cos(phi)).^(5/2), 0, pi);
