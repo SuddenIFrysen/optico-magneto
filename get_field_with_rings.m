@@ -76,5 +76,4 @@ if height(r_rings) > 0
     rad_hat(isnan(rad_hat)) = 0;
     B = B + sum(Bz .* N_rings + Br .* rad_hat, 2);
 end
-
 B = reshape(B, M, N, 3);

@@ -21,5 +21,4 @@ zlabel('z')
 plot3(R_circ(:,1),R_circ(:,2),R_circ(:,3)) %Grafenskivan
 title("The B-field evaluated on graphene")
 hold off
-
 end
