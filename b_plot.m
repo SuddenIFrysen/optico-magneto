@@ -25,7 +25,7 @@ if height(ring_pos) > 0
         if ring_n(i, 1) == 0 && ring_n(i, 2) == 0
             t1 = [1 0 0];
         end
-        t1 = t1 - ring_n(i, 2) * sum(t1.*ring_n(i, :));
+        t1 = t1 - ring_n(i, :) * sum(t1.*ring_n(i, :));
         t1 = t1 / sqrt(sum(t1.*t1));
         t2 = cross(ring_n(i, :), t1);
         R_ring = ring_pos(i, :) + ring_rad(i)*cos(theta') .* t1 + ring_rad(i)*sin(theta') .* t2;
