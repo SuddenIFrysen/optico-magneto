@@ -1,9 +1,10 @@
-function sigma = get_conductivity(domain,B, omega,x,y,z)
+function [sigmaxx, sigmaxy] = get_conductivity(domain,B, omega,x,y,z)
 %GET_CONDUCTIVITY 
-%   evalutas the the conductivity at x,y,z
+%   evaluates the the conductivity at x,y,z
 %   domain  - an object of the graphene class
+%   B       - the b-field of the graphene
 %   omega   - the wavelength of inclining light
-%   x,y,z   - each a scalar for the position.
+%   x,y,z   - each a matrix over the positions.
 q = 1.60217662e-19;
 h_bar = 6.62607015e-34;
 c = 299792458;
@@ -17,6 +18,4 @@ sigmaxx = q^2*domain.Chem_pot*1i*(omega-1i/domain.Tau)./(pi*h_bar*(omega-1i/doma
             )^2-omega_c^2);
 sigmaxy = q^2*domain.Chem_pot*omega_c./(pi*h_bar*(omega-1i/domain.Tau...
             )^2-omega_c^2);
-
-sigma = cat(3, sigmaxx, sigmayy)
 end
