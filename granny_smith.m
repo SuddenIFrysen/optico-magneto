@@ -62,7 +62,14 @@ function [x, B_best] = granny_smith(B, B_0, inprod, n, verbose)
     
     x = zeros(1, n);
     for i = 1:n
+        if verbose
+            disp(['Starting to compute inner product between target and ' num2str(i)])
+            tic
+        end
         x(i) = inprod(B_0, E{i});
+        if verbose
+            disp(['It took ' num2str(toc) ' s'])
+        end
     end
     x = (M\(x'))';
     B_best = B(x);

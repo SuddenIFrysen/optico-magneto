@@ -1,4 +1,3 @@
-
 function B = get_field_with_rings(X,Y,Z,r_dipoles, r_rings, n_rings, rad_rings, m_dipoles, mz_rings, xx, f1, f2)
 % Returns M x N x 3 array of B-field values. B(i,j,1) correspond to the 
 % B-field in the x-direction at position [X(i,j), Y(i,j), Z(i,j)]. The
@@ -58,16 +57,24 @@ if height(r_rings) > 0
     z = sum(R_rel_rings .* N_rings, 3); % Position relative orientation axis
     SinT = z ./ r_rel_rings;
     CosT = sqrt(1 - SinT.^2);
+    nan_i = a == 0;
+    SinT(nan_i) = 0;
+    CosT(nan_i) = 0;
+    
     F_arg = 2*a.*CosT./(a.^2+1);
     F1 = interp1(xx, f1, F_arg);
     F2 = interp1(xx, f2, F_arg);
-
+    
+    % Before continuing, make sure that any undefined trig points get
+    % removed
+    
     Br = 3e-7/pi * Mz_rings .* a .* SinT ./ (Rad_rings.^3 .* (a.^2 + 1).^(5/2)) .* (a .* CosT .* F1 - F2);
     Bz = 1e-7/pi * Mz_rings ./ (Rad_rings.^3 .* (a.^2 + 1).^(5/2)) .* ((3*a.^2 .* SinT.^2 - a.^2 - 1) .* F1 + 2*a.*CosT.*F2);
-
-    radial_hat = (R_rel_rings - z .* N_rings);
-    radial_hat = radial_hat ./ sqrt(sum(radial_hat.^2, 3));
-    B = B + sum(Bz .* N_rings + Br .* radial_hat, 2);
+    
+    rad_hat = (R_rel_rings - z .* N_rings);
+    rad_hat = rad_hat ./ sqrt(sum(rad_hat.^2, 3));
+    rad_hat(isnan(rad_hat)) = 0;
+    B = B + sum(Bz .* N_rings + Br .* rad_hat, 2);
 end
 
 B = reshape(B, M, N, 3);

@@ -11,8 +11,10 @@ R_circ = [x_circ', y_circ', z_circ'];
 %Skapar quiverplottar
 quiver3(X,Y,Z,Bx,By,Bz) %B-fält
 hold on
-quiver3(dipole_pos(:,1),dipole_pos(:,2),dipole_pos(:,3), ... %Dipoler
-    m_dipole(:,1),m_dipole(:,2),m_dipole(:,3),'--r','AutoScaleFactor',0.25)
+if height(dipole_pos) > 0
+    quiver3(dipole_pos(:,1),dipole_pos(:,2),dipole_pos(:,3), ... %Dipoler
+        m_dipole(:,1),m_dipole(:,2),m_dipole(:,3),'--r','AutoScaleFactor',0.25)
+end
 xlabel('x')
 ylabel('y')
 zlabel('z')
