@@ -34,6 +34,9 @@ if height(ring_pos) > 0
     plot3(R_circ(:,1),R_circ(:,2),R_circ(:,3), 'b') %Grafenskivan
 end
 
+% Fix axis
+set(gca,'DataAspectRatio',[1 1 1])
+
 title("The B-field evaluated on graphene")
 hold off
 end
