@@ -1,4 +1,4 @@
-function b_plot(X,Y,Z,Bx, By, Bz,dipole_pos,m_dipole, domain, ring_pos, ring_rad, ring_n)
+function b_plot(X,Y,Z,Bx, By, Bz,dipole_pos,m_dipole, domain, ring_pos, ring_rad, ring_n, show_cross)
 
 theta = 0:2*pi/500:2*pi;
 [x_circ, y_circ, z_circ] = domain.Transform(domain.R*cos(theta),domain.R*sin(theta),zeros(size(theta)));
@@ -7,6 +7,9 @@ R_circ = [x_circ', y_circ', z_circ'];
 % rot_mat = [1,0,0;0,cos(phi),-sin(phi);0,sin(phi),cos(phi)];
 % %Roterar cirkeln
 % R_circ = coords_circ*rot_mat;
+
+[X_cyl,Y_cyl,Z_cyl] = cylinder(0.014);
+Z_cyl = 0.1*Z_cyl-0.05;
 
 %Skapar quiverplottar
 quiver3(X,Y,Z,Bx,By,Bz, 'b') %B-fält
@@ -34,6 +37,11 @@ if height(ring_pos) > 0
     plot3(R_circ(:,1),R_circ(:,2),R_circ(:,3), 'b') %Grafenskivan
 end
 
+if show_cross
+    surf(X_cyl,Y_cyl,Z_cyl, 'FaceColor', [0.1,0.1,0.1], 'FaceAlpha', 0.1);
+    surf(Y_cyl,Z_cyl,X_cyl, 'FaceColor', [0.1,0.1,0.1], 'FaceAlpha', 0.1);
+end
+    
 % Fix axis
 set(gca,'DataAspectRatio',[1 1 1])
 
