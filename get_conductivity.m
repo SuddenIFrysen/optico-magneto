@@ -13,7 +13,7 @@ M = m*domain.Fermi_vel^2/domain.Chem_pot;
 Bf = B(x,y,z);
 normal_tensor = cat(3, ones([width(Bf),height(Bf)])*domain.Normal(1), ones([width(Bf),height(Bf)])*domain.Normal(2), ones([width(Bf),height(Bf)])*domain.Normal(3));
 
-omega_c = q*dot(normal_tensor,Bf,3)/(m*c)*M;
+omega_c = q*dot(normal_tensor,Bf,3)/(m)*M;
 sigmaxx = q^2*domain.Chem_pot*1i*(omega-1i/domain.Tau)./(pi*h_bar*(omega-1i/domain.Tau...
             )^2-omega_c^2);
 sigmaxy = q^2*domain.Chem_pot*omega_c./(pi*h_bar*(omega-1i/domain.Tau...
