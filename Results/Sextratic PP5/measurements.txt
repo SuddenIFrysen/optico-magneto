@@ -1,4 +1,4 @@
-PP5
+PP5 Sextratic
 Dipoles:
 	Height	     : 47,001 mm
 	Radius	     : 27,136 mm

@@ -1,4 +1,4 @@
-PP5
+PP5 Uniform
 Dipoles:
 	Height	     : 39,696 mm
 	Radius	     : 22,919 mm

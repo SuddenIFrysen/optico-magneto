@@ -1,0 +1,9 @@
+PP6 Uniform
+Inner Ring:
+	Inner radius : 25,066 mm
+	Outer radius : 34,934 mm
+	Height	     :  9,868 mm  (MODIFIED 7,7 mm)
+Outer Ring:
+	Inner radius : 37,280 mm
+	Outer radius : 72,720 mm (MODIFIED 74,25 mm)
+	Height	     : 35,440 mm
