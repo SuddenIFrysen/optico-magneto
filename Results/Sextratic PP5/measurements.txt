@@ -1,0 +1,9 @@
+PP5
+Dipoles:
+	Height	     : 47,001 mm
+	Radius	     : 27,136 mm
+	Center pos   : 70,711 mm ( =50*sqrt(2) mm)
+Ring:
+	Inner radius : 29,130 mm
+	Outer radius : 40,870 mm (MODIFIED 43,25 mm)
+	Height	     : 11,740 mm
