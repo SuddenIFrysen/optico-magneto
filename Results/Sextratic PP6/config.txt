@@ -1,0 +1,31 @@
+%% Here, specify where all dipoles and rings are located. These position must me
+% explicitly specified. Each row corresponds to a dipole, and its columns
+% are x, y and z positions.
+OUTER_RADIUS = 0.014;
+
+dipole_positions = [] * 0.045;
+ring_positions = [0 0 0; 0 0 0];
+ring_normals = [0 -1/sqrt(2) 1/sqrt(2); 0 -1/sqrt(2) 1/sqrt(2)];
+ring_radii = [0.03; 0.055];
+
+% Now, for each dipole, and for each ring, specify its magnetic moment. Every row should
+% relate to the magnetic moment of the dipole of the same row in
+% 'dipole_positions'. Set values to 'nan' to indicate that the values
+% should be determined by a target field.
+Md_x = [];
+Md_k = [];
+Md_m = zeros(size(Md_x));
+
+% These values go for the rings. Only axial magnetization is supported
+Mr_x = [1; 2];
+Mr_k = [1; 1];
+Mr_m = zeros(size(Mr_x));
+
+% Here, specify on which domain to evaluate the B-field. Currently, only
+% discs normal to the z-axis are available
+target_domain = graphene([0, 0, 0], 0.01, pi/4, 0, 0, 0);
+
+% Finally, specify the target magnetic field profile. Any undetermined dipole
+% magnetizations will be set to approximate this field, on a 2D-domain
+% defined above.
+target_field = B_field_quadratic_profile(target_domain, 0.2, 1, -0.8, 0.05);

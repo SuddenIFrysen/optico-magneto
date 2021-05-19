@@ -1,0 +1,14 @@
+PP6 Sextratic
+Inner Ring:
+	Inner radius : 26,542 mm
+	Outer radius : 33,458 mm
+	Height	     :  6,915 mm  (MODIFIED 4,8 mm)
+
+Outer Ring:
+	Inner radius : 38,486 mm
+	Outer radius : 71,514 mm (MODIFIED 72,9 mm)
+	Height	     : 33,027 mm
+
+
+
+
